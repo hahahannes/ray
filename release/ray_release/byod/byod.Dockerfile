@@ -6,6 +6,7 @@ FROM "$BASE_IMAGE"
 
 ARG PIP_REQUIREMENTS
 ARG DEBIAN_REQUIREMENTS
+ARG RAY_COMMIT
 
 COPY "$DEBIAN_REQUIREMENTS" .
 RUN <<EOF
@@ -25,3 +26,11 @@ EOF
 COPY "$PIP_REQUIREMENTS" .
 RUN "$HOME"/anaconda3/bin/pip install --no-cache-dir https://ray-ci-deps-wheels.s3.us-west-2.amazonaws.com/AutoROM.accept_rom_license-0.5.4-py3-none-any.whl
 RUN "$HOME"/anaconda3/bin/pip install --no-cache-dir -r "${PIP_REQUIREMENTS}"
+
+RUN <<EOF
+#!/bin/bash
+
+COMMIT=${COMMIT_TO_TEST-${BUILDKITE_COMMIT}}
+python -c "import ray; assert ray.__commit__ == \"${RAY_COMMIT}\", ray.__commit__"
+
+EOF

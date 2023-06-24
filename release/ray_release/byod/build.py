@@ -41,6 +41,8 @@ def build_anyscale_custom_byod_image(test: Test) -> None:
             f"BASE_IMAGE={test.get_anyscale_base_byod_image()}",
             "--build-arg",
             f"POST_BUILD_SCRIPT={test.get_byod_post_build_script()}",
+            "--build-arg",
+            f"RAY_COMMIT={_get_ray_commit()}",
             "-t",
             byod_image,
             "-f",
@@ -125,6 +127,8 @@ def build_anyscale_base_byod_images(tests: List[Test]) -> None:
                         f"PIP_REQUIREMENTS={byod_requirements}",
                         "--build-arg",
                         "DEBIAN_REQUIREMENTS=requirements_debian_byod.txt",
+                        "--build-arg",
+                        f"RAY_COMMIT={_get_ray_commit()}",
                         "-t",
                         byod_image,
                         "-f",
@@ -186,3 +190,10 @@ def _byod_image_exist(test: Test, base_image: bool = True) -> bool:
         return True
     except client.exceptions.ImageNotFoundException:
         return False
+
+
+def _get_ray_commit() -> str:
+    return os.environ.get(
+        "COMMIT_TO_TEST",
+        os.environ["BUILDKITE_COMMIT"],
+    )
