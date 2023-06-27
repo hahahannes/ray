@@ -294,13 +294,13 @@ def deployment(
             replica of this deployment without receiving a response. Defaults to 100.
         health_check_period_s: Duration between health check calls for the replica.
             Defaults to 10s. The health check is by default a no-op Actor call to the
-            replica, but you can define your own health check using the "check_health" 
+            replica, but you can define your own health check using the "check_health"
             method in your deployment that raises an exception when unhealthy.
-        health_check_timeout_s: Duration in seconds, that replicas wait for a health 
+        health_check_timeout_s: Duration in seconds, that replicas wait for a health
             check method to return before considering it as failed. Defaults to 30s.
         graceful_shutdown_wait_loop_s: Duration that replicas wait until there is
             no more work to be done before shutting down. Defaults to 2s.
-        graceful_shutdown_timeout_s: Duration to wait for a replica to gracefully 
+        graceful_shutdown_timeout_s: Duration to wait for a replica to gracefully
             shut down before being forcefully killed. Defaults to 20s.
         is_driver_deployment: [EXPERIMENTAL] when set, exactly one replica of this
             deployment runs on every node (like a daemon set).
