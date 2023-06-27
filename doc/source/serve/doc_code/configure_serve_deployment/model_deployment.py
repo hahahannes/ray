@@ -9,10 +9,11 @@ from transformers import pipeline
 
 app = FastAPI()
 
+
 @serve.deployment(
     name="Translator",
     route_prefix="/",
-    num_replicas=2, 
+    num_replicas=2,
     ray_actor_options={"num_cpus": 0.2, "num_gpus": 0},
     max_concurrent_queries=100,
     # autoscaling_config={"min_replicas": 1, "initial_replicas": 2, "max_replicas": 5, "target_num_ongoing_requests_per_replica": 10},
